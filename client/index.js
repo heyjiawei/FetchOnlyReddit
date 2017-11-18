@@ -1,9 +1,11 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
+import { BrowserRouter, Route } from 'react-router-dom'
 import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { redditApp } from './reducers'
+
 import App from './components/App'
 
 let store = createStore(
@@ -13,7 +15,9 @@ let store = createStore(
 
 render(
   <Provider store={store}>
-    <App />
+    <BrowserRouter>
+      <Route path='/' component={App} />
+    </BrowserRouter>
   </Provider>,
   document.getElementById('root')
 )

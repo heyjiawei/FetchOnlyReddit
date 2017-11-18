@@ -6,10 +6,7 @@ const Topic = ({ active, onClick }) => {
     return <span>Singapore</span>
   } else {
     return (
-      <a
-        href="#"
-        onClick={e => onClick()}
-      >
+      <a>
         <div>
           Singapore
         </div>

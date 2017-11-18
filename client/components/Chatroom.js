@@ -3,6 +3,17 @@ import { connect } from 'react-redux'
 import Chatbox from './Chatbox'
 
 class Chatroom extends Component {
+  // printReplies(details) {
+  //   console.log(details)
+  //   for (let detail of details) {
+  //     console.log(detail)
+  //     return (
+  //       <Chatbox
+  //         {...detail}
+  //       />
+  //     )
+  //   }
+  // }
   // printReplyStructure(details, level) {
   //   let chatboxes = []
   //   if (!Array.isArray(details)) {
@@ -29,16 +40,25 @@ class Chatroom extends Component {
       return <p>Loading...</p>
     }
 
-    if (this.props.postId.length > 0) {
-      let postData = getPost(this.props.postId, this.props.listings)[0]
-      console.log(this.props.details)
+    if (this.props.post.length > 0) {
+      let postData = this.props.post[0]
+      let chatboxes = []
+      this.props.details.forEach((detail, index) => {
+        console.log(detail)
+        chatboxes.push(
+          <Chatbox
+            key={index}
+            {...detail}
+          />
+        )
+      })
 
       return (
         <div>
           <h1>{postData.title}</h1>
           <h5>By {postData.author}, {new Date(postData.created).toLocaleString()}</h5>
           <div dangerouslySetInnerHTML={{ __html: postData.selftext }} />
-          
+          {chatboxes}
         </div>
       )
     } else {
@@ -55,8 +75,7 @@ const mapStateToProps = (state) => ({
   details: state.details,
   hasErrored: state.detailHasError,
   isLoading: state.detailIsLoading,
-  postId: state.currentPostId,
-  listings: state.listings
+  post: getPost(state.currentPostId, state.listings)
 })
 
 export default connect(

@@ -81,26 +81,47 @@ export const detailsSuccess = (details) => ({
   details
 })
 
-export const retrieveReplies = (replies) => {
-  if (replies.length == 0) {
-    return {}
+export const retrieveReplies = (replies, level) => {
+  let convo = []
+  for (let reply of replies) {
+    if (reply.kind == 't1') {
+      let r = reply.data
+      convo.push({
+        author: r.author,
+        body: r.body_html,
+        created: r.created,
+        level
+      })
 
-  } else {
-    let convo = []
-    for (let reply of replies.data.children) {
-      if (reply.kind == 't1') {
-        let r = reply.data
-        convo.push({
-          author: r.author,
-          body: r.body_html,
-          created: r.created,
-          replies: retrieveReplies(r.replies)
-        })
+      if (r.replies) {
+        let repliesToReplies = retrieveReplies(r.replies.data.children, level + 1)
+        convo = convo.concat(repliesToReplies)
       }
     }
-    return convo
   }
+  return convo
 }
+
+// export const retrieveReplies_original = (replies) => {
+//   if (replies.length == 0) {
+//     return {}
+//
+//   } else {
+//     let convo = []
+//     for (let reply of replies.data.children) {
+//       if (reply.kind == 't1') {
+//         let r = reply.data
+//         convo.push({
+//           author: r.author,
+//           body: r.body_html,
+//           created: r.created,
+//           replies: retrieveReplies(r.replies)
+//         })
+//       }
+//     }
+//     return convo
+//   }
+// }
 
 export const fetchDetails = (permalink) => {
   return (dispatch) => {
@@ -116,19 +137,41 @@ export const fetchDetails = (permalink) => {
       })
       .then(data => data[1].data.children)
       .then(comments => {
-        for (let comment of comments) {
-          if (comment.kind == 't1') {
-            let c = comment.data
-            details.push({
-              author: c.author,
-              body: c.body_html,
-              created: c.created,
-              replies: retrieveReplies(c.replies)
-            })
-          }
-        }
+        // console.log(comments)
+        details = retrieveReplies(comments, 0)
         dispatch(detailsSuccess(details))
       })
       .catch(() => dispatch(detailsErrored(true)))
   }
 }
+
+// export const fetchDetails = (permalink) => {
+//   return (dispatch) => {
+//     dispatch(detailsLoading(true))
+//
+//     let details = []
+//     let thread = permalink.slice(0, -1)
+//
+//     fetch(`https://www.reddit.com${thread}.json`)
+//       .then(response => {
+//         dispatch(detailsLoading(false))
+//         return response.json()
+//       })
+//       .then(data => data[1].data.children)
+//       .then(comments => {
+//         for (let comment of comments) {
+//           if (comment.kind == 't1') {
+//             let c = comment.data
+//             details.push({
+//               author: c.author,
+//               body: c.body_html,
+//               created: c.created,
+//               replies: retrieveReplies(c.replies)
+//             })
+//           }
+//         }
+//         dispatch(detailsSuccess(details))
+//       })
+//       .catch(() => dispatch(detailsErrored(true)))
+//   }
+// }

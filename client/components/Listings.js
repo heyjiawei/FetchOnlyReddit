@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { fetchListings, fetchDetails, currentPostId } from '../actions'
+
 import Post from './Post'
 
 class Listings extends Component {
@@ -16,21 +17,22 @@ class Listings extends Component {
     if (this.props.isLoading) {
       return <p>Loading...</p>
     }
+    
+    if (this.props.postId) {
+      return <div></div>
+    }
 
-    console.log(this.props)
     return (
       <div>
-        <ul>
-          {
-            this.props.listings.map((item) => (
-              <Post
-                key={item.id}
-                onPostClick={() => this.props.onPostClick(item.permalink, item.id)}
-                {...item}
-              />
-            ))
-          }
-        </ul>
+        {
+          this.props.listings.map((item) => (
+            <Post
+              key={item.id}
+              onPostClick={() => this.props.onPostClick(item.permalink, item.id)}
+              {...item}
+            />
+          ))
+        }
       </div>
     )
   }
@@ -39,7 +41,8 @@ class Listings extends Component {
 const mapStateToProps = (state) => ({
   listings: state.listings,
   hasErrored: state.listingHasError,
-  isLoading: state.listingIsLoading
+  isLoading: state.listingIsLoading,
+  postId: state.currentPostId
 })
 
 const mapDispatchToProps = (dispatch) => ({
