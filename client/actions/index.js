@@ -102,27 +102,6 @@ export const retrieveReplies = (replies, level) => {
   return convo
 }
 
-// export const retrieveReplies_original = (replies) => {
-//   if (replies.length == 0) {
-//     return {}
-//
-//   } else {
-//     let convo = []
-//     for (let reply of replies.data.children) {
-//       if (reply.kind == 't1') {
-//         let r = reply.data
-//         convo.push({
-//           author: r.author,
-//           body: r.body_html,
-//           created: r.created,
-//           replies: retrieveReplies(r.replies)
-//         })
-//       }
-//     }
-//     return convo
-//   }
-// }
-
 export const fetchDetails = (permalink) => {
   return (dispatch) => {
     dispatch(detailsLoading(true))
@@ -130,7 +109,7 @@ export const fetchDetails = (permalink) => {
     let details = []
     let thread = permalink.slice(0, -1)
 
-    fetch(`https://www.reddit.com${thread}.json`)
+    fetch(`https://www.reddit.com${thread}.json?raw_json=1`)
       .then(response => {
         dispatch(detailsLoading(false))
         return response.json()
@@ -144,34 +123,3 @@ export const fetchDetails = (permalink) => {
       .catch(() => dispatch(detailsErrored(true)))
   }
 }
-
-// export const fetchDetails = (permalink) => {
-//   return (dispatch) => {
-//     dispatch(detailsLoading(true))
-//
-//     let details = []
-//     let thread = permalink.slice(0, -1)
-//
-//     fetch(`https://www.reddit.com${thread}.json`)
-//       .then(response => {
-//         dispatch(detailsLoading(false))
-//         return response.json()
-//       })
-//       .then(data => data[1].data.children)
-//       .then(comments => {
-//         for (let comment of comments) {
-//           if (comment.kind == 't1') {
-//             let c = comment.data
-//             details.push({
-//               author: c.author,
-//               body: c.body_html,
-//               created: c.created,
-//               replies: retrieveReplies(c.replies)
-//             })
-//           }
-//         }
-//         dispatch(detailsSuccess(details))
-//       })
-//       .catch(() => dispatch(detailsErrored(true)))
-//   }
-// }

@@ -32,8 +32,6 @@ class SubredditList extends Component {
   }
 
   render() {
-    // console.log(this.state)
-    // console.log(this.props)
     const { classes } = this.props
     let { drawer } = this.state
     const sideList = (
@@ -67,16 +65,6 @@ class SubredditList extends Component {
       </div>
     )
   }
-
-  // render() {
-  //   return (
-  //     <div>
-  //       <ul>
-  //         <Topic />
-  //       </ul>
-  //     </div>
-  //   )
-  // }
 }
 
 export default withStyles(styles)(SubredditList);

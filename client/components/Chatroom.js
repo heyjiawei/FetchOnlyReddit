@@ -1,36 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+
+import Paper from 'material-ui/Paper'
+import Typography from 'material-ui/Typography'
+
 import Chatbox from './Chatbox'
 
 class Chatroom extends Component {
-  // printReplies(details) {
-  //   console.log(details)
-  //   for (let detail of details) {
-  //     console.log(detail)
-  //     return (
-  //       <Chatbox
-  //         {...detail}
-  //       />
-  //     )
-  //   }
-  // }
-  // printReplyStructure(details, level) {
-  //   let chatboxes = []
-  //   if (!Array.isArray(details)) {
-  //     return chatboxes
-  //   } else {
-  //     for (let item of details) {
-  //       chatboxes.push(
-  //         <Chatbox
-  //           {...item}
-  //           level={level}
-  //         />
-  //       )
-  //       printReplyStructure(details)
-  //     }
-  //   }
-  // }
-
   render() {
     if (this.props.hasErrored) {
       return <p>Sorry! There was an error loading the items</p>
@@ -42,22 +18,39 @@ class Chatroom extends Component {
 
     if (this.props.post.length > 0) {
       let postData = this.props.post[0]
+      let dateTime = new Date(postData.created * 1000).toUTCString()
       let chatboxes = []
       this.props.details.forEach((detail, index) => {
-        console.log(detail)
         chatboxes.push(
           <Chatbox
             key={index}
             {...detail}
-          />
+          >
+            {detail.body}
+          </Chatbox>
         )
       })
 
       return (
         <div>
-          <h1>{postData.title}</h1>
-          <h5>By {postData.author}, {new Date(postData.created).toLocaleString()}</h5>
-          <div dangerouslySetInnerHTML={{ __html: postData.selftext }} />
+          <Paper
+            elevation={4}
+          >
+            <Typography
+              type="headline"
+              component="h3"
+            >
+              {postData.title}
+            </Typography>
+            <Typography
+              type="body1"
+              component="div"
+            >
+              By {postData.author}, {dateTime}
+              <br/>
+              <div dangerouslySetInnerHTML={{ __html: postData.selftext }} />
+            </Typography>
+          </Paper>
           {chatboxes}
         </div>
       )
