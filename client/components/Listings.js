@@ -6,7 +6,9 @@ import Post from './Post'
 
 class Listings extends Component {
   componentDidMount() {
-    this.props.fetchListings()
+    if (this.props.listings.length == 0) {
+        this.props.fetchListings()
+    }
   }
 
   render() {
@@ -16,10 +18,6 @@ class Listings extends Component {
 
     if (this.props.isLoading) {
       return <p>Loading...</p>
-    }
-    
-    if (this.props.postId) {
-      return <div></div>
     }
 
     return (

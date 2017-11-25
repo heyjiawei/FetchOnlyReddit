@@ -6,7 +6,8 @@ import {
   FETCH_DETAILS_FAILURE,
   FETCH_DETAILS_LOADING,
   FETCH_DETAILS_SUCCESS,
-  CURRENT_POST_ID
+  CURRENT_POST_ID,
+  CURRENT_SUBREDDIT
 } from '../actions'
 
 export const detailHasError = (state = false, action) => {
@@ -79,6 +80,16 @@ export const currentPostId = (state = '', action) => {
   }
 }
 
+export const subreddit = (state = '', action) => {
+  switch (action.type) {
+    case CURRENT_SUBREDDIT:
+      return action.subreddit
+
+    default:
+      return state
+  }
+}
+
 export const redditApp = combineReducers({
   listings,
   listingHasError,
@@ -86,5 +97,6 @@ export const redditApp = combineReducers({
   details,
   detailHasError,
   detailIsLoading,
-  currentPostId
+  currentPostId,
+  subreddit
 })

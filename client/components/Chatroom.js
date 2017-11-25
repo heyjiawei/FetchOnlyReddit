@@ -1,15 +1,32 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import Paper from 'material-ui/Paper'
 import Typography from 'material-ui/Typography'
 
+import { fetchListings } from '../actions'
+
 import Chatbox from './Chatbox'
 
 class Chatroom extends Component {
+  // componentWillMount() {
+  //   console.log(this.props)
+  //   console.log(this.props.match.params.id, 'id')
+  //   // When a URL is typed in directly
+  //   // or when user refreshes
+  //   if (this.props.post.length == 0) {
+  //     this.props.dispatch(fetchListings())
+  //   }
+  // }
+
   render() {
     if (this.props.hasErrored) {
-      return <p>Sorry! There was an error loading the items</p>
+      return (
+        <div>
+          <p>Sorry! There was an error loading the items</p>
+        </div>
+      )
     }
 
     if (this.props.isLoading) {
@@ -33,6 +50,7 @@ class Chatroom extends Component {
 
       return (
         <div>
+          <Link to="/">Back</Link>
           <Paper
             elevation={4}
           >
@@ -55,7 +73,8 @@ class Chatroom extends Component {
         </div>
       )
     } else {
-      return <div></div>
+      // this.props.dispatch(fetchDetailsByTopicAndId())
+      return <div>Please fetch data!</div>
     }
   }
 }

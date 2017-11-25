@@ -4,10 +4,6 @@ import Paper from 'material-ui/Paper'
 import Typography from 'material-ui/Typography'
 
 class Chatbox extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-
   render() {
     let { author, body, created, level } = this.props
     let dateTime = new Date(created * 1000).toUTCString()

@@ -1,5 +1,3 @@
-// import fetch from 'isomorphic-fetch'
-
 // fetch api actions
 export const FETCH_LISTING_LOADING = 'FETCH_LISTING_LOADING'
 export const FETCH_LISTING_FAILURE = 'FETCH_LISTING_FAILURE'
@@ -116,7 +114,6 @@ export const fetchDetails = (permalink) => {
       })
       .then(data => data[1].data.children)
       .then(comments => {
-        // console.log(comments)
         details = retrieveReplies(comments, 0)
         dispatch(detailsSuccess(details))
       })
